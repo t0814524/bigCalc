@@ -34,8 +34,6 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
 
   @Override
   public BigDecimal visitParen(BigCalcParser.ParenContext ctx) {
-    System.out.println("paren");
-    System.out.println(ctx.getText());
     return visit(ctx.expression());
   }
 
@@ -43,14 +41,11 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
   public BigDecimal visitAssignmentStatement(
     BigCalcParser.AssignmentStatementContext ctx
   ) {
-    System.out.println("assignmentstatement vistit");
-    System.out.println(ctx.getText());
     return visit(ctx.assignment());
   }
 
   @Override
   public BigDecimal visitAssignment(BigCalcParser.AssignmentContext ctx) {
-    System.out.println("ass vistit");
     BigDecimal res = visit(ctx.expression());
     String variableName = ctx.Variable().getText();
     this.symbolTable.put(variableName, res);
@@ -62,12 +57,8 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
     final BigDecimal left = visit(ctx.expression(0));
     final BigDecimal right = visit(ctx.expression(1));
     if (ctx.op.getText().equals("*")) {
-      System.out.println("visit div");
       return left.multiply(right);
     } else {
-      System.out.println("visit div");
-      System.out.println(left);
-      System.out.println(right);
       return left.divide(right, 10, RoundingMode.HALF_UP);
     }
   }
@@ -77,10 +68,8 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
     final BigDecimal left = visit(ctx.expression(0));
     final BigDecimal right = visit(ctx.expression(1));
     if (ctx.op.getText().equals("+")) {
-      System.out.println("visit add");
       return left.add(right);
     } else {
-      System.out.println("visit sub");
       return left.subtract(right);
     }
   }
@@ -93,11 +82,8 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
   @Override
   public BigDecimal visitVar(BigCalcParser.VarContext ctx) {
     String variableName = ctx.getText();
-    System.out.println("visti var");
-    System.out.println(variableName);
     BigDecimal val =
       this.symbolTable.getOrDefault(variableName, new BigDecimal(0));
-    System.out.println(val);
     return val;
   }
 }
