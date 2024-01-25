@@ -15,6 +15,7 @@ assignmentStatement
 
 assignment
         : Variable '=' expression
+        // | .+ '=' expression
         ;
 
 expressionStatement
@@ -29,13 +30,13 @@ expression
         | Number                                # num
         ;
 
-Variable 
-        : Char Number*
-        ;
-
 Number  
         : Digit* '.' Digit+
         | Digit+
+        ;
+
+Variable 
+        : Char Digit*
         ;
 
 Char   

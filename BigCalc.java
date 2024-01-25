@@ -24,6 +24,7 @@ public class BigCalc {
     } catch (ArrayIndexOutOfBoundsException e) {
       System.out.println("usage: usage: java BigCalc <file>");
     } catch (Exception e) {
+      System.out.println("catch in main");
       System.out.println(e);
     }
   }
