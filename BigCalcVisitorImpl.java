@@ -12,7 +12,6 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
     for (BigCalcParser.StatementContext statementContext : ctx.statement()) {
       res = visitStatement(statementContext);
     }
-    System.out.println(res);
     return res;
   }
 
@@ -34,8 +33,6 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
 
   @Override
   public BigDecimal visitParen(BigCalcParser.ParenContext ctx) {
-    System.out.println("paren");
-    System.out.println(ctx.getText());
     return visit(ctx.expression());
   }
 
@@ -43,32 +40,26 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
   public BigDecimal visitAssignmentStatement(
     BigCalcParser.AssignmentStatementContext ctx
   ) {
-    System.out.println("assignmentstatement vistit");
+    // System.out.println("assignmentstatement vistit");
     // BigCalcParser.AssignmentContext asdf = ctx.assignment(); // nullptr error
     // System.out.println("assignmentstatement vistit2"); // not printed if line above is active
 
-    try{
-      System.out.println("tryy");
-      System.out.println(ctx.getText());
-      
+    try {
       return visit(ctx.assignment());
-    }
-    catch(Exception e){
-      System.out.println("e.getMessage()");
-      e.printStackTrace();
+    } catch (Exception e) {
+      // System.out.println(e.getMessage());
+      // e.printStackTrace();
     }
     return new BigDecimal(0);
   }
 
   @Override
   public BigDecimal visitAssignment(BigCalcParser.AssignmentContext ctx) {
-    System.out.println("ass vistit");
     BigDecimal res = visit(ctx.expression());
-    if(ctx.Variable() != null){
+    if (ctx.Variable() != null) {
       String variableName = ctx.Variable().getText();
       this.symbolTable.put(variableName, res);
     }
-    System.out.println("ass vistit");
     return res;
   }
 
@@ -77,12 +68,8 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
     final BigDecimal left = visit(ctx.expression(0));
     final BigDecimal right = visit(ctx.expression(1));
     if (ctx.op.getText().equals("*")) {
-      System.out.println("visit div");
       return left.multiply(right);
     } else {
-      System.out.println("visit div");
-      System.out.println(left);
-      System.out.println(right);
       return left.divide(right, 10, RoundingMode.HALF_UP);
     }
   }
@@ -92,10 +79,8 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
     final BigDecimal left = visit(ctx.expression(0));
     final BigDecimal right = visit(ctx.expression(1));
     if (ctx.op.getText().equals("+")) {
-      System.out.println("visit add");
       return left.add(right);
     } else {
-      System.out.println("visit sub");
       return left.subtract(right);
     }
   }
@@ -108,11 +93,11 @@ public class BigCalcVisitorImpl extends BigCalcBaseVisitor<BigDecimal> {
   @Override
   public BigDecimal visitVar(BigCalcParser.VarContext ctx) {
     String variableName = ctx.getText();
-    System.out.println("visti var");
-    System.out.println(variableName);
+    // System.out.println("visti var");
+    // System.out.println(variableName);
     BigDecimal val =
       this.symbolTable.getOrDefault(variableName, new BigDecimal(0));
-    System.out.println(val);
+    // System.out.println(val);
     return val;
   }
 }
